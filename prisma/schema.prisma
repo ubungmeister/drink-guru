@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  password  String
+  savedCocktails UserCocktail[]
+}
+
+model Cocktail {
+  id      String   @id @default(uuid())
+  name    String   @unique
+  users   UserCocktail[]
+}
+
+model UserCocktail {
+  id          String   @id @default(uuid())
+  userId      String
+  cocktailId  String
+  user        User      @relation(fields: [userId], references: [id])
+  cocktail    Cocktail  @relation(fields: [cocktailId], references: [id])
+
+  @@unique([userId, cocktailId]) // Ensure uniqueness, don't need to check manually before adding cocktail
+}
