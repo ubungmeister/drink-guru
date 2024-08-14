@@ -21,5 +21,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/questionnaire", "/"], // Paths to apply this middleware
+  matcher: ["/drink", "/"], // Paths to apply this middleware
 };
