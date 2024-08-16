@@ -1,18 +1,22 @@
+"use client";
+
 import React, { Suspense } from "react";
 import "../globals.css";
-
-export default function AuthLayout({
+import { Header } from "../../components/header";
+import { useState } from "react";
+export default function CoreLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
+
   return (
-    <Suspense>
+    <div>
+      <Header />
       <div className="flex flex-row">
-        <main className="flex h-full min-h-screen w-full flex-col items-center justify-center bg-gradient-to-r from-[#0b1314] to-[#50164b] px-4 pb-10">
-          {children}
-        </main>
+        <main className="core-layout">{children}</main>
       </div>
-    </Suspense>
+    </div>
   );
 }

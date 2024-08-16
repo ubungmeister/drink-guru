@@ -5,7 +5,7 @@ import { authOptions } from "../pages/api/auth/[...nextauth]";
 export default async function Home() {
   const session = await getServerSession(authOptions);
   if (session) {
-    redirect("/drink");
+    redirect("/drink-generator");
   } else {
     redirect("/signin");
   }

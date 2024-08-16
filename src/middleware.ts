@@ -21,5 +21,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/drink", "/"], // Paths to apply this middleware
+  matcher: ["/drink-generator", "/"], // Paths to apply this middleware
 };
