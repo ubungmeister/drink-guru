@@ -28,7 +28,7 @@ export const HeaderMenu = () => {
               <>
                 <MenuItem>
                   <p className="flex w-full px-4 py-2 text-sm text-gray-700  hover:bg-info-content hover:text-white cursor-pointer ">
-                    {capitalize(userName)}
+                    {capitalize(userName || "")}
                   </p>
                 </MenuItem>
                 <MenuItem>

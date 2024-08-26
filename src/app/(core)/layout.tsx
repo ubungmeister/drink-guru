@@ -9,8 +9,7 @@ export default function CoreLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
-
+  
   return (
     <div>
       <Header />
