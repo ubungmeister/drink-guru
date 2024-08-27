@@ -1,13 +1,12 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from "http-status-codes";
-
+import { dataFilter } from "@utilities/datafilter";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
   try {
-
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
@@ -47,15 +46,18 @@ export default async function handler(
             const randomCoctail = Math.floor(
               Math.random() * data.drinks.length,
             );
-            console.log("Random cocktail:", data.drinks[randomCoctail]);
+
+            const filteredData = dataFilter(data.drinks[randomCoctail]);
+
             return res
               .status(StatusCodes.CREATED)
-              .json({ output: randomCoctail });
+              .json({ output: filteredData });
           } else {
-            console.log("data.drinks[0]", data.drinks[0]);
+            const filteredData = dataFilter(data.drinks[0]);
+
             return res
               .status(StatusCodes.CREATED)
-              .json({ output: data.drinks[0] });
+              .json({ output: filteredData });
           }
         } else {
           console.log("Cocktail not found, one more time...");
