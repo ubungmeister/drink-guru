@@ -5,12 +5,12 @@ import { questions } from "@utilities/questionFileds";
 export const QuestionsList = ({
   currentQuestion,
   nextQuestion,
-  previouseQuestion,
+  previousQuestion,
   answers,
   handleAnswerChange,
 }: QuestionsModalProps) => {
   return (
-    <>
+    <div className="flex justify-center items-start min-h-screen pt-48">
       {" "}
       {questions.map((question, index) => (
         <div
@@ -19,7 +19,7 @@ export const QuestionsList = ({
         >
           <h3>{question.prompt}</h3>
           {currentQuestion > 0 && (
-            <button onClick={previouseQuestion}>Previous</button>
+            <button onClick={previousQuestion}>Previous</button>
           )}
           {question.options.map((option, idx) => (
             <label key={idx}>
@@ -42,6 +42,6 @@ export const QuestionsList = ({
           }
         </div>
       ))}
-    </>
+    </div>
   );
 };

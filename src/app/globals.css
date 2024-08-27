@@ -50,10 +50,13 @@ layer base {
     @apply relative z-10 text-white;
   }
   .core-layout {
-    @apply flex h-full min-h-screen w-full flex-col items-center justify-center bg-white px-4 pb-10;
+    @apply flex h-full min-h-screen w-full flex-col  bg-[#FEF9E4]  pb-10;
   }
   /*header*/
   .header-container {
-    @apply px-0 font-mono text-white font-bold  flex h-12 w-full flex-row items-center justify-between md:justify-between bg-[#3c2d63]  md:h-6 md:min-h-[4rem];
+    @apply px-0 font-mono text-white font-bold  flex h-28  w-full flex-row items-center justify-end	md:justify-between md:bg-[#3c2d63] bg-[#FEF9E4]  md:h-6 md:min-h-[4rem];
+  }
+  .header-icon {
+    @apply w-[30px] bg-green-400;
   }
 }

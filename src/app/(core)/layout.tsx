@@ -3,13 +3,12 @@
 import React, { Suspense } from "react";
 import "../globals.css";
 import { Header } from "../../components/header";
-import { useState } from "react";
+
 export default function CoreLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  
   return (
     <div>
       <Header />

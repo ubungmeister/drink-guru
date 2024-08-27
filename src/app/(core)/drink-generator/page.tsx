@@ -1,22 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Answers } from "@/types/drink-generator";
+import { Answers, DrinkRecipeType } from "@/types/drink-generator";
 import { questions } from "@/utilities/questionFileds";
 import { QuestionsList } from "@/components/questionsList";
 import { DrinkRecipe } from "@/components/drinkRecipe";
-import { useQuery } from "@tanstack/react-query";
+import backgroundImage from "@/assets/backgroundImage.svg";
+import { StartModule } from "@/components/startModule";
 
 export default function Page() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
-  const [drink, setDrink] = useState<any>(null);
+  const [drink, setDrink] = useState<DrinkRecipeType | null>(null);
   const [showDrink, setShowDrink] = useState(false);
+  const [showStartModule, setShowStartModule] = useState(true);
 
   const buildQuestionnaire = () => {
     let questionnatire = `The client has completed a quiz to determine their cocktail preferences. Based on the answers provided, please suggest only one cocktail name that aligns with their taste. Only one coctail name. ${
       drink &&
-      `Choose different from ${drink.strDrink}"
+      `Choose different from ${drink.name}"
   .`
     }`;
     Object.entries(answers).map(([key, value]) => {
@@ -70,7 +72,7 @@ export default function Page() {
     }
   };
 
-  const previouseQuestion = () => {
+  const previousQuestion = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1);
     }
@@ -82,24 +84,21 @@ export default function Page() {
     setAnswers({});
   };
 
+  if (showStartModule) {
+    return <StartModule setShowStartModule={setShowStartModule} />;
+  }
+
+  if (showDrink && drink) {
+    return <DrinkRecipe drink={drink} />;
+  }
+
   return (
-    <div>
-      {/**show questions modal when the user is not done with the questions */}
-      {showDrink ? (
-        <>
-          <div>{drink && drink.strDrink}</div>
-          <button onClick={fetchDrinkSuggestion}>Dice</button>
-          <button onClick={onStartOver}>Start Over</button>
-        </>
-      ) : (
-        <QuestionsList
-          previouseQuestion={previouseQuestion}
-          currentQuestion={currentQuestion}
-          nextQuestion={nextQuestion}
-          answers={answers}
-          handleAnswerChange={handleAnswerChange}
-        />
-      )}
-    </div>
+    <QuestionsList
+      previousQuestion={previousQuestion}
+      currentQuestion={currentQuestion}
+      nextQuestion={nextQuestion}
+      answers={answers}
+      handleAnswerChange={handleAnswerChange}
+    />
   );
 }

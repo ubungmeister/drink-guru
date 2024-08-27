@@ -4,6 +4,9 @@ import { HiMenuAlt4 } from "react-icons/hi";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { capitalize } from "@/utilities/capitalize";
+import Image from "next/image";
+import menu from "@/assets/menu.svg";
+import menuweb from "@/assets/menuweb.svg";
 
 export const HeaderMenu = () => {
   const { data: session } = useSession();
@@ -16,10 +19,21 @@ export const HeaderMenu = () => {
         className="relative inline-block text-left text-base-content "
       >
         <div>
-          <MenuButton className="inline-flex w-full justify-center py-2">
-            <div className="p-2">
-              <HiMenuAlt4 size={30} />
-            </div>
+          <MenuButton className="inline-flex w-full justify-center py-2 ">
+            <Image
+              src={menu}
+              alt="martini"
+              className="block md:hidden"
+              width={70}
+              height={70}
+            />
+            <Image
+              src={menuweb}
+              alt="martini"
+              className="hidden md:block "
+              width={50}
+              height={50}
+            />
           </MenuButton>
         </div>
         <MenuItems className="absolute right-0 mt-4 w-60 origin-top-right divide-y divide-neutral rounded-md border border-neutral bg-gray-50 shadow-sm">
