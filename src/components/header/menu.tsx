@@ -1,6 +1,6 @@
 import React from "react";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { HiMenuAlt4 } from "react-icons/hi";
+import { RiMenu3Fill } from "react-icons/ri";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { capitalize } from "@/utilities/capitalize";
@@ -20,20 +20,7 @@ export const HeaderMenu = () => {
       >
         <div>
           <MenuButton className="inline-flex w-full justify-center py-2 ">
-            <Image
-              src={menu}
-              alt="martini"
-              className="block md:hidden"
-              width={70}
-              height={70}
-            />
-            <Image
-              src={menuweb}
-              alt="martini"
-              className="hidden md:block "
-              width={50}
-              height={50}
-            />
+            <RiMenu3Fill className="w-70 h-70 text-[#3c2d63]" />
           </MenuButton>
         </div>
         <MenuItems className="absolute right-0 mt-4 w-60 origin-top-right divide-y divide-neutral rounded-md border border-neutral bg-gray-50 shadow-sm">

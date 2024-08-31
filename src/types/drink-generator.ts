@@ -8,6 +8,7 @@ export type QuestionsModalProps = {
   previousQuestion: () => void;
   answers: Answers;
   handleAnswerChange: (questionId: number, answer: string) => void;
+  isLoading: boolean;
 };
 
 export type DrinkRecipeType = {

@@ -5,7 +5,6 @@ import { Answers, DrinkRecipeType } from "@/types/drink-generator";
 import { questions } from "@/utilities/questionFileds";
 import { QuestionsList } from "@/components/questionsList";
 import { DrinkRecipe } from "@/components/drinkRecipe";
-import backgroundImage from "@/assets/backgroundImage.svg";
 import { StartModule } from "@/components/startModule";
 
 export default function Page() {
@@ -14,6 +13,7 @@ export default function Page() {
   const [drink, setDrink] = useState<DrinkRecipeType | null>(null);
   const [showDrink, setShowDrink] = useState(false);
   const [showStartModule, setShowStartModule] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const buildQuestionnaire = () => {
     let questionnatire = `The client has completed a quiz to determine their cocktail preferences. Based on the answers provided, please suggest only one cocktail name that aligns with their taste. Only one coctail name. ${
@@ -38,6 +38,7 @@ export default function Page() {
   };
 
   const fetchDrinkSuggestion = async () => {
+    setIsLoading(true)
     const questionnatire = buildQuestionnaire();
 
     const response = await fetch("/api/aigenerate", {
@@ -54,6 +55,7 @@ export default function Page() {
 
     const data = (await response.json()) as any;
     setDrink(data.output);
+    setIsLoading(false)
     setShowDrink(true);
   };
 
@@ -99,6 +101,7 @@ export default function Page() {
       nextQuestion={nextQuestion}
       answers={answers}
       handleAnswerChange={handleAnswerChange}
+      isLoading={isLoading}
     />
   );
 }
