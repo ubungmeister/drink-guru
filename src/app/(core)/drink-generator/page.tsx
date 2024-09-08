@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import { Answers, DrinkRecipeType } from "@/types/drink-generator";
 import { questions } from "@/utilities/questionFileds";
 import { QuestionsList } from "@/components/questionsList";
 import { DrinkRecipe } from "@/components/drinkRecipe";
 import { StartModule } from "@/components/startModule";
+import { randomAswersChoose } from "@utilities/questionFileds";
+import { DrinkLoading } from "@/components/library/animations/DrinkLoading";
 
 export default function Page() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -14,6 +16,7 @@ export default function Page() {
   const [showDrink, setShowDrink] = useState(false);
   const [showStartModule, setShowStartModule] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+ 
 
   const buildQuestionnaire = () => {
     let questionnatire = `The client has completed a quiz to determine their cocktail preferences. Based on the answers provided, please suggest only one cocktail name that aligns with their taste. Only one coctail name. ${
@@ -38,7 +41,7 @@ export default function Page() {
   };
 
   const fetchDrinkSuggestion = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     const questionnatire = buildQuestionnaire();
 
     const response = await fetch("/api/aigenerate", {
@@ -55,7 +58,7 @@ export default function Page() {
 
     const data = (await response.json()) as any;
     setDrink(data.output);
-    setIsLoading(false)
+    setIsLoading(false);
     setShowDrink(true);
   };
 
@@ -86,22 +89,40 @@ export default function Page() {
     setAnswers({});
   };
 
+  const onRandomClick = () => {
+    const randomAnswers = randomAswersChoose();
+    setAnswers(randomAnswers);
+    fetchDrinkSuggestion();
+  };
+
+  if (isLoading) {
+    return <DrinkLoading />;
+  }
+
   if (showStartModule) {
     return <StartModule setShowStartModule={setShowStartModule} />;
   }
 
-  if (showDrink && drink) {
-    return <DrinkRecipe drink={drink} />;
+  if (showDrink && drink && !isLoading) {
+    return (
+      <DrinkRecipe
+        drink={drink}
+        startOver={onStartOver}
+        fetchAgain={fetchDrinkSuggestion}
+        isLoading={isLoading}
+      />
+    );
   }
-
-  return (
-    <QuestionsList
-      previousQuestion={previousQuestion}
-      currentQuestion={currentQuestion}
-      nextQuestion={nextQuestion}
-      answers={answers}
-      handleAnswerChange={handleAnswerChange}
-      isLoading={isLoading}
-    />
-  );
+  if (!isLoading) {
+    return (
+      <QuestionsList
+        previousQuestion={previousQuestion}
+        currentQuestion={currentQuestion}
+        nextQuestion={nextQuestion}
+        answers={answers}
+        handleAnswerChange={handleAnswerChange}
+        onRandomClick={onRandomClick}
+      />
+    );
+  }
 }

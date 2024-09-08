@@ -1,40 +1,19 @@
 import React from "react";
 import { QuestionsModalProps } from "@/types/drink-generator";
-import { questions } from "@utilities/questionFileds";
+import { questions, randomAswersChoose } from "@utilities/questionFileds";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaDice } from "react-icons/fa";
-import { SyncLoader as Loader } from "react-spinners";
 
 export const QuestionsList = ({
   currentQuestion,
   nextQuestion,
   previousQuestion,
+  onRandomClick,
   answers,
   handleAnswerChange,
-  isLoading,
 }: QuestionsModalProps) => {
-  // Show loading message if loading is true
-  if (isLoading) {
-    return (
-      <div className="flex items-start pt-48 justify-center min-h-screen">
-        <motion.div
-          className="w-[296px] h-[180px] p-4 rounded-2xl space-x-1 flex items-center justify-center text-white text-center"
-          key="loading"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          style={{
-            backgroundColor: "#f29e74",
-          }}
-        >
-          <h3 className="font-medium text-xl">Loading, please wait</h3>
-          <Loader color="white" loading={true} size={7} />
-        </motion.div>
-      </div>
-    );
-  }
 
+  
   // Show questions if not loading
   return (
     <div className="flex items-start pt-48 justify-center min-h-screen">
@@ -80,7 +59,10 @@ export const QuestionsList = ({
                       <button onClick={previousQuestion}>Previous</button>
                     )}
                     {currentQuestion === 0 && (
-                      <button className="flex flex-row space-x-1">
+                      <button
+                        className="flex flex-row space-x-1"
+                        onClick={onRandomClick}
+                      >
                         <span>Random</span> <FaDice />
                       </button>
                     )}

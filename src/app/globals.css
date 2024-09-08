@@ -59,4 +59,7 @@ layer base {
   .header-icon {
     @apply w-[30px] bg-green-400;
   }
+  .drink-button {
+    @apply bg-[#1d2742]   text-white font-bold rounded-3xl  flex justify-center items-center hover:bg-[#f96575];
+  }
 }

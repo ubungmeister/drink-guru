@@ -8,7 +8,6 @@ export function dataFilter(data: any) {
       ingredients.push({ ingredient: ingredient, measure: measure });
     }
   }
-  console.log("list", ingredients);
 
   const filteredData = {
     name: data.strDrink,

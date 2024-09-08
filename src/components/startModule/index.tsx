@@ -34,7 +34,7 @@ export const StartModule = ({ setShowStartModule }: StartModuleProps) => {
           </div>
           <button
             onClick={() => setShowStartModule(false)}
-            className="bg-[#1d2742] hover:bg-primary-content text-white font-bold py-2 px-4 rounded-3xl w-[180px] h-[58px] flex justify-center items-center hover:bg-[#f96575] "
+            className="drink-button w-[180px] h-[58px] py-2 px-4"
           >
             <span>Get Started</span>
             <MdOutlineKeyboardArrowRight className="w-5" />

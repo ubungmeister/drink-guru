@@ -4,9 +4,6 @@ import { RiMenu3Fill } from "react-icons/ri";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { capitalize } from "@/utilities/capitalize";
-import Image from "next/image";
-import menu from "@/assets/menu.svg";
-import menuweb from "@/assets/menuweb.svg";
 
 export const HeaderMenu = () => {
   const { data: session } = useSession();
@@ -20,7 +17,7 @@ export const HeaderMenu = () => {
       >
         <div>
           <MenuButton className="inline-flex w-full justify-center py-2 ">
-            <RiMenu3Fill className="w-70 h-70 text-[#3c2d63]" />
+            <RiMenu3Fill className="w-70 h-70 text-[#3c2d63] md:text-white" />
           </MenuButton>
         </div>
         <MenuItems className="absolute right-0 mt-4 w-60 origin-top-right divide-y divide-neutral rounded-md border border-neutral bg-gray-50 shadow-sm">

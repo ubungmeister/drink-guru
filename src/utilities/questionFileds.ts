@@ -1,3 +1,4 @@
+import {Answers} from "@/types/drink-generator"
 export const questions = [
   {
     id: 1,
@@ -30,3 +31,12 @@ export const questions = [
     color: "#f29e74",
   },
 ];
+
+export const randomAswersChoose = () => {
+  const answers:Answers = {};
+  questions.forEach((question) => {
+    const randomOption = Math.floor(Math.random() * question.options.length);
+    answers[question.id] = question.options[randomOption];
+  });
+  return answers
+}
