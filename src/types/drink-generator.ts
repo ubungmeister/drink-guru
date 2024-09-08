@@ -6,6 +6,7 @@ export type QuestionsModalProps = {
   currentQuestion: number;
   nextQuestion: () => void;
   previousQuestion: () => void;
+  onRandomClick: () => void;
   answers: Answers;
   handleAnswerChange: (questionId: number, answer: string) => void;
 };

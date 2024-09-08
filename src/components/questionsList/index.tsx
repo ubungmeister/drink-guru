@@ -1,47 +1,83 @@
 import React from "react";
 import { QuestionsModalProps } from "@/types/drink-generator";
-import { questions } from "@utilities/questionFileds";
+import { questions, randomAswersChoose } from "@utilities/questionFileds";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaDice } from "react-icons/fa";
 
 export const QuestionsList = ({
   currentQuestion,
   nextQuestion,
   previousQuestion,
+  onRandomClick,
   answers,
   handleAnswerChange,
 }: QuestionsModalProps) => {
+
+  
+  // Show questions if not loading
   return (
-    <div className="flex justify-center items-start min-h-screen pt-48">
-      {" "}
-      {questions.map((question, index) => (
-        <div
-          key={question.id}
-          style={{ display: index === currentQuestion ? "block" : "none" }}
-        >
-          <h3>{question.prompt}</h3>
-          {currentQuestion > 0 && (
-            <button onClick={previousQuestion}>Previous</button>
-          )}
-          {question.options.map((option, idx) => (
-            <label key={idx}>
-              <input
-                type="radio"
-                name={`question-${question.id}`}
-                value={option}
-                checked={answers[question.id] === option}
-                onChange={() => handleAnswerChange(question.id, option)}
-              />
-              {option}
-            </label>
-          ))}
-          {
-            <button onClick={nextQuestion}>
-              {currentQuestion === questions.length - 1
-                ? "Submit"
-                : "Next Question"}
-            </button>
-          }
-        </div>
-      ))}
+    <div className="flex items-start pt-48 justify-center min-h-screen">
+      <div className="flex flex-col items-center space-y-4">
+        <AnimatePresence>
+          {questions.map((question, index) => {
+            const isVisible = index === currentQuestion; // Only show the current question
+            return (
+              isVisible && (
+                <motion.div
+                  className="w-[296px]  p-4 rounded-2xl transition-all duration-100 text-white"
+                  key={question.id}
+                  style={{
+                    backgroundColor: question.color,
+                  }}
+                  initial={{ opacity: 0, y: 0 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <h3 className="mb-4 font-medium text-xl text-center">
+                    {question.prompt}
+                  </h3>
+                  <div className="flex flex-row flex-wrap space-x-2 mb-4 justify-center">
+                    {question.options.map((option, idx) => (
+                      <label key={idx} className="flex items-center mb-2">
+                        <input
+                          type="radio"
+                          name={`question-${question.id}`}
+                          value={option}
+                          checked={answers[question.id] === option}
+                          onChange={() =>
+                            handleAnswerChange(question.id, option)
+                          }
+                          className="mr-2"
+                        />
+                        {option}
+                      </label>
+                    ))}
+                  </div>
+                  <div className="flex justify-between">
+                    {currentQuestion > 0 && (
+                      <button onClick={previousQuestion}>Previous</button>
+                    )}
+                    {currentQuestion === 0 && (
+                      <button
+                        className="flex flex-row space-x-1"
+                        onClick={onRandomClick}
+                      >
+                        <span>Random</span> <FaDice />
+                      </button>
+                    )}
+                    <button onClick={nextQuestion}>
+                      {currentQuestion === questions.length - 1
+                        ? "Submit"
+                        : "Next Question"}
+                    </button>
+                  </div>
+                </motion.div>
+              )
+            );
+          })}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };
