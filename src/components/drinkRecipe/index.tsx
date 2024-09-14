@@ -9,6 +9,7 @@ interface DrinkRecipeProps {
   drink: DrinkRecipeType;
   startOver: () => void;
   fetchAgain: () => void;
+  saveDrink: () => void;
   isLoading: boolean;
 }
 
@@ -17,6 +18,7 @@ export const DrinkRecipe = ({
   startOver,
   fetchAgain,
   isLoading,
+  saveDrink,
 }: DrinkRecipeProps) => {
   console.log("drink.image", drink.image);
 
@@ -86,6 +88,7 @@ export const DrinkRecipe = ({
           >
             Start over
           </button>
+          <button onClick={()=>saveDrink()}>Save</button>
         </div>
       </div>
     </div>

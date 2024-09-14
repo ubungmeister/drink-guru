@@ -1,7 +1,4 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
-import { ZodError } from "zod";
-import Credentials from "next-auth/providers/credentials";
-import { object, string } from "zod";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -52,11 +49,13 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.email = user.email;
+        token.name = user.name;
       }
       return token;
     },
     async session({ session, token }) {
       if (session && session.user && token) {
+        session.user.id = token.id;
         session.user.name = token.name;
         session.user.email = token.email;
       }

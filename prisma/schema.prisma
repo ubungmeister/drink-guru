@@ -19,6 +19,7 @@ model User {
 model Cocktail {
   id      String   @id @default(uuid())
   name    String   @unique
+  image   String?
   users   UserCocktail[]
 }
 

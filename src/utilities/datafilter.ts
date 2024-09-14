@@ -10,6 +10,7 @@ export function dataFilter(data: any) {
   }
 
   const filteredData = {
+    id: data.idDrink,
     name: data.strDrink,
     instructions: data.strInstructions,
     image: data.strDrinkThumb,
