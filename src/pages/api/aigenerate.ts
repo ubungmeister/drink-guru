@@ -48,7 +48,6 @@ export default async function handler(
             );
 
             const filteredData = dataFilter(data.drinks[randomCoctail]);
-
             return res
               .status(StatusCodes.CREATED)
               .json({ output: filteredData });

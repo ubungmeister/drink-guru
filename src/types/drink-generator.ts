@@ -12,6 +12,7 @@ export type QuestionsModalProps = {
 };
 
 export type DrinkRecipeType = {
+  id: string;
   name: string;
   instructions: string;
   image: string;
