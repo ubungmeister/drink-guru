@@ -11,6 +11,8 @@ interface DrinkRecipeProps {
   fetchAgain: () => void;
   saveDrink: () => void;
   isLoading: boolean;
+  isDrinkSaved: boolean;
+  isSaving: boolean;
 }
 
 export const DrinkRecipe = ({
@@ -19,6 +21,8 @@ export const DrinkRecipe = ({
   fetchAgain,
   isLoading,
   saveDrink,
+  isDrinkSaved,
+  isSaving,
 }: DrinkRecipeProps) => {
   console.log("drink.image", drink.image);
 
@@ -88,7 +92,13 @@ export const DrinkRecipe = ({
           >
             Start over
           </button>
-          <button onClick={()=>saveDrink()}>Save</button>
+          <button
+            className="drink-button py-2 px-4 disabled:bg-gray-300"
+            disabled={isSaving}
+            onClick={() => saveDrink()}
+          >
+            {isDrinkSaved ? "Delete" : "Save"}
+          </button>
         </div>
       </div>
     </div>

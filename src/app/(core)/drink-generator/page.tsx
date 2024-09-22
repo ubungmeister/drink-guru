@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Answers, DrinkRecipeType } from "@/types/drink-generator";
 import { questions } from "@/utilities/questionFileds";
 import { QuestionsList } from "@/components/questionsList";
@@ -9,13 +9,31 @@ import { StartModule } from "@/components/startModule";
 import { randomAswersChoose } from "@utilities/questionFileds";
 import { DrinkLoading } from "@/components/library/animations/DrinkLoading";
 import { toast } from "react-toastify";
+
 export default function Page() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
   const [drink, setDrink] = useState<DrinkRecipeType | null>(null);
   const [showDrink, setShowDrink] = useState(false);
   const [showStartModule, setShowStartModule] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(false);
+  const [isDrinkSaved, setIsDrinkSaved] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    const checkIfSaved = async () => {
+      try {
+        const response = await fetch(
+          `/api/saveddrinks?cocktailId=${drink?.id}`,
+        );
+        const data = await response.json();
+        setIsDrinkSaved(data.isCocktailSaved);
+      } catch (error) {
+        console.log("Failed to fetch", error);
+      }
+    };
+    checkIfSaved();
+  }, [drink, isDrinkSaved]);
 
   const buildQuestionnaire = () => {
     let questionnatire = `The client has completed a quiz to determine their cocktail preferences. Based on the answers provided, please suggest only one cocktail name that aligns with their taste. Only one coctail name. ${
@@ -40,7 +58,7 @@ export default function Page() {
   };
 
   const fetchDrinkSuggestion = async () => {
-    setIsLoading(true);
+    setIsDataLoading(true);
     const questionnatire = buildQuestionnaire();
 
     const response = await fetch("/api/aigenerate", {
@@ -56,9 +74,8 @@ export default function Page() {
     }
 
     const data = (await response.json()) as any;
-    console.log("data", data.output);
     setDrink(data.output);
-    setIsLoading(false);
+    setIsDataLoading(false);
     setShowDrink(true);
   };
 
@@ -96,22 +113,26 @@ export default function Page() {
   };
 
   const onSaveDrink = async () => {
-    setIsLoading(true);
+    setIsSaving(true);
     const response = await fetch("/api/saveddrinks", {
-      method: "POST",
+      method: isDrinkSaved ? "DELETE" : "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ drink: drink }),
     });
     if (!response.ok) {
+      setIsSaving(false);
+
       throw new Error("Failed to save drink");
     }
-    toast.success("Drink saved");
-    setIsLoading(false);
+    setIsDrinkSaved(!isDrinkSaved);
+    setIsSaving(false);
+
+    toast.success(isDrinkSaved ? "Drink DELETED" : "Drink SAVED");
   };
 
-  if (isLoading) {
+  if (isDataLoading) {
     return <DrinkLoading />;
   }
 
@@ -119,18 +140,20 @@ export default function Page() {
     return <StartModule setShowStartModule={setShowStartModule} />;
   }
 
-  if (showDrink && drink && !isLoading) {
+  if (showDrink && drink && !isDataLoading) {
     return (
       <DrinkRecipe
         drink={drink}
         startOver={onStartOver}
         fetchAgain={fetchDrinkSuggestion}
         saveDrink={onSaveDrink}
-        isLoading={isLoading}
+        isLoading={isDataLoading}
+        isDrinkSaved={isDrinkSaved}
+        isSaving={isSaving}
       />
     );
   }
-  if (!isLoading) {
+  if (!isDataLoading) {
     return (
       <QuestionsList
         previousQuestion={previousQuestion}
