@@ -22,10 +22,9 @@ export default function Page() {
 
   useEffect(() => {
     const checkIfSaved = async () => {
+      if (!drink) return;
       try {
-        const response = await fetch(
-          `/api/saveddrinks?cocktailId=${drink?.id}`,
-        );
+        const response = await fetch(`/api/saveddrinks/${drink.id}`);
         const data = await response.json();
         setIsDrinkSaved(data.isCocktailSaved);
       } catch (error) {

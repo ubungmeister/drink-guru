@@ -24,8 +24,6 @@ export const DrinkRecipe = ({
   isDrinkSaved,
   isSaving,
 }: DrinkRecipeProps) => {
-  console.log("drink.image", drink.image);
-
   const half = Math.ceil(drink.ingredients.length / 2);
   const firstColumn = drink.ingredients.slice(0, half);
   const secondColumn = drink.ingredients.slice(half);
