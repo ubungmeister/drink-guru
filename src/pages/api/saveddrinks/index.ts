@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { authOptions } from "./auth/[...nextauth]";
+import { authOptions } from "../auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 
 import { PrismaClient } from "@prisma/client";
@@ -26,7 +26,6 @@ export default async function handler(
       },
     });
 
-
     if (!drink) {
       // If the drink doesn't exist, create it and associate with the user
       await prisma.$transaction(async (tx) => {
@@ -37,7 +36,6 @@ export default async function handler(
             image,
           },
         });
-
 
         await tx.userCocktail.create({
           data: {
@@ -59,15 +57,7 @@ export default async function handler(
   }
   //get the saved drink by ID for a certain user
   if (req.method === "GET") {
-    // Assuming the cocktail ID is passed as a query parameter
-    const cocktailId = req.query.cocktailId;
-
-    if (!cocktailId) {
-      res.status(400).json({ content: "Cocktail ID is required" });
-      return;
-    }
-
-    // Retrieve saved cocktails for the user
+    // Fetch all saved drinks for the user
     const savedDrinks = await prisma.userCocktail.findMany({
       where: {
         userId: session.user.id,
@@ -77,21 +67,9 @@ export default async function handler(
       },
     });
 
-    // Check if the cocktail is already saved
-    const isCocktailSaved = savedDrinks.some(
-      (savedDrink) => savedDrink.cocktail.id === cocktailId,
-    );
-
-    if (isCocktailSaved) {
-      res
-        .status(200)
-        .json({ content: "Cocktail already saved", isCocktailSaved: true });
-    } else {
-      res
-        .status(200)
-        .json({ content: "Cocktail not saved", isCocktailSaved: false });
-    }
+    return res.status(200).json({ content: "All saved drinks", savedDrinks });
   }
+
   if (req.method === "DELETE") {
     const { id } = req.body.drink;
 

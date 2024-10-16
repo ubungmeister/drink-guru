@@ -14,7 +14,7 @@ export const StartModule = ({ setShowStartModule }: StartModuleProps) => {
   return (
     <div className="flex md:items-center md:justify-center min-h-screen">
       <div className="flex flex-col md:flex-row px-8 ">
-        <div className="md:flex md:flex-col space-y-2">
+        <div className="md:flex md:flex-col space-y-2 -mt-[4.5rem]">
           <Image
             src={text}
             alt="drink"
@@ -27,7 +27,7 @@ export const StartModule = ({ setShowStartModule }: StartModuleProps) => {
             alt="drink"
             width={0}
             height={0}
-            className="w-[120px] h-[50px] md:w-[180px] md:h-[88px]"
+            className="w-[120px] h-[60px] md:w-[180px] md:h-[88px]"
           />
           <div className="text-[#757163] text-lg pb-3 whitespace-pre-line">
             {"The one-stop to find amazing drink \n mixes for any occasion."}
