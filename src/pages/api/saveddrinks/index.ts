@@ -25,7 +25,6 @@ export default async function handler(
         id,
       },
     });
-
     if (!drink) {
       // If the drink doesn't exist, create it and associate with the user
       await prisma.$transaction(async (tx) => {
@@ -66,7 +65,7 @@ export default async function handler(
         cocktail: true,
       },
     });
-
+    console.log("savedDrinks", savedDrinks);
     return res.status(200).json({ content: "All saved drinks", savedDrinks });
   }
 

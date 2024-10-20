@@ -14,7 +14,7 @@ export const StartModule = ({ setShowStartModule }: StartModuleProps) => {
   return (
     <div className="flex md:items-center md:justify-center min-h-screen">
       <div className="flex flex-col md:flex-row px-8 ">
-        <div className="md:flex md:flex-col space-y-2 -mt-[4.5rem]">
+        <div className="md:flex md:flex-col space-y-4 -mt-[4.5rem]">
           <Image
             src={text}
             alt="drink"
