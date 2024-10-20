@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { RiMenu3Fill } from "react-icons/ri";
@@ -10,14 +11,15 @@ export const HeaderMenu = () => {
   const userName = session?.user?.name;
 
   return (
-    <div className="z-50 text-right">
+    <div className="z-50 text-right absolute top-0 right-0 p-4">
+      {/* Menu container is now positioned absolutely */}
       <Menu
         as="div"
-        className="relative inline-block text-left text-base-content "
+        className="relative inline-block text-left text-base-content"
       >
         <div>
-          <MenuButton className="inline-flex w-full justify-center py-2 ">
-            <RiMenu3Fill className="w-70 h-70 text-[#3c2d63] md:text-white" />
+          <MenuButton className="inline-flex w-full justify-center py-2">
+            <RiMenu3Fill className="w-6 h-6 text-[#3c2d63] md:text-white" />
           </MenuButton>
         </div>
         <MenuItems className="absolute right-0 mt-4 w-60 origin-top-right divide-y divide-neutral rounded-md border border-neutral bg-gray-50 shadow-sm">
@@ -25,7 +27,7 @@ export const HeaderMenu = () => {
             {session ? (
               <>
                 <MenuItem>
-                  <p className="flex w-full px-4 py-2 text-sm text-gray-700  hover:bg-info-content hover:text-white cursor-pointer ">
+                  <p className="flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-info-content hover:text-white cursor-pointer">
                     {capitalize(userName || "")}
                   </p>
                 </MenuItem>
@@ -34,7 +36,7 @@ export const HeaderMenu = () => {
                     <Link
                       className={`${
                         focus ? "bg-info-content text-white" : ""
-                      } flex w-full px-4 py-2 text-sm text-gray-700 `}
+                      } flex w-full px-4 py-2 text-sm text-gray-700`}
                       href="/saved-drinks"
                     >
                       Saved
@@ -46,7 +48,7 @@ export const HeaderMenu = () => {
                     <Link
                       className={`${
                         focus ? "bg-info-content text-white" : ""
-                      } flex w-full px-4 py-2 text-sm text-gray-700 `}
+                      } flex w-full px-4 py-2 text-sm text-gray-700`}
                       href="/api/auth/signout"
                     >
                       Sign Out
@@ -61,7 +63,7 @@ export const HeaderMenu = () => {
                     <Link
                       className={`${
                         focus ? "bg-info-content text-white" : ""
-                      } flex w-full px-4 py-2 text-sm text-gray-700 `}
+                      } flex w-full px-4 py-2 text-sm text-gray-700`}
                       href="/signin"
                     >
                       Saved
@@ -74,7 +76,7 @@ export const HeaderMenu = () => {
                     <Link
                       className={`${
                         focus ? "bg-info-content text-white" : ""
-                      } flex w-full px-4 py-2 text-sm text-gray-700 `}
+                      } flex w-full px-4 py-2 text-sm text-gray-700`}
                       href="/signin"
                     >
                       Sign in

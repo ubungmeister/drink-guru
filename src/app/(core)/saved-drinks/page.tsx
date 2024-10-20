@@ -4,44 +4,53 @@ import { useEffect, useState } from "react";
 import saveddrinks from "@/assets/saveddrinks.svg";
 import Image from "next/image";
 import { ListItem } from "@/components/library/ListItem";
-import { FetchedDrinksType, FetchedDrinkType } from "@/types/saved-drinks";
+import { FetchedDrinksType } from "@/types/saved-drinks";
+import { useQuery } from "@tanstack/react-query";
+import { savedDrinks } from "@/utilities/useQueries/index";
 
 export default function Page() {
-  //get all saved drinks for a certain user
-  const [fetchedDrinks, setFetchedDrinks] = useState<FetchedDrinksType[]>([]);
+  const {
+    data: fetchedDrinks,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["savedDrinks"],
+    queryFn: savedDrinks,
+    enabled: true,
+  });
 
-  useEffect(() => {
-    const fetchSavedDrinks = async () => {
-      try {
-        const response = await fetch("/api/saveddrinks");
-        const data = await response.json();
-        setFetchedDrinks(data.savedDrinks);
-      } catch (error) {
-        console.log("Failed to fetch", error);
-      }
-    };
-    fetchSavedDrinks();
-  }, []);
-
+  
 
   return (
-    <div className="flex  items-center  justify-center min-h-screen">
-      <div className="flex flex-col md:flex-row ">
-        <div className="md:flex md:flex-col space-y-2 -mt-[5.1rem] md:mt-4">
-          <Image
-            src={saveddrinks}
-            alt="drink"
-            width={0}
-            height={0}
-            className="w-[240px] h-[60px] md:w-[180px] md:h-[88px] md:hidden"
-          />
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 space-x-0.5 justify-center items-center">
-            {fetchedDrinks.map((drink, index) => (
-              <ListItem key={index} drink={drink.cocktail} />
-            ))}
+    <div className="relative flex flex-col items-center justify-start min-h-screen">
+      {isLoading && <div>Loading...</div>}
+      {isError && <div>Error: {error?.message}</div>}
+      {!isLoading && !isError && fetchedDrinks && (
+        <>
+          {/* Image should appear next to the menu, positioned absolutely */}
+          <div className="absolute top-[-5.4rem] left-[2rem] md:left-[8rem]">
+            <Image
+              src={saveddrinks}
+              alt="Saved drinks"
+              width={240}
+              height={60}
+              className="w-[240px] h-[60px] md:w-[180px] md:h-[88px]"
+            />
           </div>
-        </div>
-      </div>
+
+          {/* Grid container for the saved drinks */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 justify-center items-center w-full max-w-6xl px-4 mt-[2rem]">
+            {fetchedDrinks.length > 0 ? (
+              fetchedDrinks.map((drink:FetchedDrinksType, index:any) => (
+                <ListItem key={index} drink={drink.cocktail} />
+              ))
+            ) : (
+              <p>No saved drinks found.</p>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }

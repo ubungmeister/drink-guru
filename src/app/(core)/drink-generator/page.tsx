@@ -22,11 +22,11 @@ export default function Page() {
 
   useEffect(() => {
     const checkIfSaved = async () => {
-      if (!drink) return;
-      try {
+      if (!drink?.id) return;
+       try {
         const response = await fetch(`/api/saveddrinks/${drink.id}`);
         const data = await response.json();
-        setIsDrinkSaved(data.isCocktailSaved);
+        setIsDrinkSaved(!!data.savedDrink);
       } catch (error) {
         console.log("Failed to fetch", error);
       }
@@ -35,7 +35,7 @@ export default function Page() {
   }, [drink, isDrinkSaved]);
 
   const buildQuestionnaire = () => {
-    let questionnatire = `The client has completed a quiz to determine their cocktail preferences. Based on the answers provided, please suggest only one cocktail name that aligns with their taste. Only one coctail name. ${
+    let questionnaire = `The client has completed a quiz to determine their cocktail preferences. Based on the answers provided, please suggest only one cocktail name that aligns with their taste. Only one coctail name. ${
       drink &&
       `Choose different from ${drink.name}"
   .`
@@ -44,7 +44,7 @@ export default function Page() {
       const question = questions.find(
         (question) => question.id === parseInt(key),
       );
-      questionnatire = questionnatire.concat(
+      questionnaire = questionnaire.concat(
         (question?.prompt as string) + " " + value + ". ",
       );
       return {
@@ -53,19 +53,19 @@ export default function Page() {
       };
     });
 
-    return questionnatire;
+    return questionnaire;
   };
 
   const fetchDrinkSuggestion = async () => {
     setIsDataLoading(true);
-    const questionnatire = buildQuestionnaire();
+    const questionnaire = buildQuestionnaire();
 
     const response = await fetch("/api/aigenerate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(questionnatire),
+      body: JSON.stringify(questionnaire),
     });
 
     if (!response.ok) {
@@ -75,7 +75,7 @@ export default function Page() {
     const data = (await response.json()) as any;
     setDrink(data.output);
     setIsDataLoading(false);
-    setShowDrink(true);
+    // setShowDrink(true);
   };
 
   const handleAnswerChange = (questionId: number, answer: string) => {
@@ -100,7 +100,8 @@ export default function Page() {
   };
 
   const onStartOver = () => {
-    setShowDrink(!showDrink);
+    // setShowDrink(!showDrink);
+    setDrink(null);
     setCurrentQuestion(0);
     setAnswers({});
   };
@@ -113,7 +114,7 @@ export default function Page() {
 
   const onSaveDrink = async () => {
     setIsSaving(true);
-    const response = await fetch("/api/saveddrinks", {
+     const response = await fetch("/api/saveddrinks", {
       method: isDrinkSaved ? "DELETE" : "POST",
       headers: {
         "Content-Type": "application/json",
@@ -139,7 +140,7 @@ export default function Page() {
     return <StartModule setShowStartModule={setShowStartModule} />;
   }
 
-  if (showDrink && drink && !isDataLoading) {
+  if (drink && !isDataLoading) {
     return (
       <DrinkRecipe
         drink={drink}
