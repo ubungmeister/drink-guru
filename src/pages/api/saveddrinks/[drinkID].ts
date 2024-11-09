@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { authOptions } from "../auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
-
+import { dataFilter } from "@utilities/datafilter";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
@@ -35,8 +35,16 @@ export default async function handler(
       },
     });
 
-    if (savedDrink) {
-      return res.status(200).json({ content: "Cocktail found", savedDrink });
+     if (savedDrink) {
+      const response = await fetch(
+        `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${drinkID}`,
+      );
+      const data = await response.json();
+      const filteredData = dataFilter(data.drinks[0]);
+
+      return res
+        .status(200)
+        .json({ content: "Cocktail found", savedDrink, filteredData });
     } else {
       return res.status(404).json({ content: "Cocktail not saved" });
     }

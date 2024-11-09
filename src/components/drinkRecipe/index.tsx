@@ -1,29 +1,64 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { DrinkRecipeType } from "@/types/drink-generator";
 import Image from "next/image";
 import { FaDice } from "react-icons/fa";
 import { PuffLoader as Loader } from "react-spinners";
-import { DrinkLoading } from "@/components/library/animations/DrinkLoading";
+import { toast } from "react-toastify";
 
 interface DrinkRecipeProps {
-  drink: DrinkRecipeType;
-  startOver: () => void;
-  fetchAgain: () => void;
-  saveDrink: () => void;
+  drink: DrinkRecipeType | null;
+  startOver?: () => void;
+  fetchAgain?: () => void;
   isLoading: boolean;
-  isDrinkSaved: boolean;
-  isSaving: boolean;
+  hideButtons?: boolean;
 }
 
 export const DrinkRecipe = ({
+  hideButtons,
   drink,
-  startOver,
-  fetchAgain,
+  startOver = () => {},
+  fetchAgain = () => {},
   isLoading,
-  saveDrink,
-  isDrinkSaved,
-  isSaving,
 }: DrinkRecipeProps) => {
+  const [isDrinkSaved, setIsDrinkSaved] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    const checkIfSaved = async () => {
+      if (!drink?.id) return;
+      try {
+        const response = await fetch(`/api/saveddrinks/${drink.id}`);
+        const data = await response.json();
+        setIsDrinkSaved(!!data.savedDrink);
+      } catch (error) {}
+    };
+    checkIfSaved();
+  }, [drink, isDrinkSaved]);
+
+  const onSaveDrink = async () => {
+    setIsSaving(true);
+    const response = await fetch("/api/saveddrinks", {
+      method: isDrinkSaved ? "DELETE" : "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ drink: drink }),
+    });
+    if (!response.ok) {
+      setIsSaving(false);
+
+      throw new Error("Failed to save drink");
+    }
+    setIsDrinkSaved(!isDrinkSaved);
+    setIsSaving(false);
+
+    toast.success(isDrinkSaved ? "Drink DELETED" : "Drink SAVED");
+  };
+
+  if (!drink) {
+    return <div>Loading...</div>;
+  }
+
   const half = Math.ceil(drink.ingredients.length / 2);
   const firstColumn = drink.ingredients.slice(0, half);
   const secondColumn = drink.ingredients.slice(half);
@@ -72,28 +107,42 @@ export const DrinkRecipe = ({
           <p className="mt-4 max-w-full md:max-w-md">{drink.instructions}</p>
         </div>
         <div className="pt-10  flex justify-between">
-          <button
-            className="drink-button py-2 px-4 space-x-0.5"
-            disabled={isLoading}
-            onClick={() => {
-              fetchAgain();
-            }}
-          >
-            <span>Try another</span> <FaDice />
-          </button>
-          <button
-            disabled={isLoading}
-            className="drink-button py-2 px-4"
-            onClick={() => {
-              startOver();
-            }}
-          >
-            Start over
-          </button>
+          {!hideButtons && (
+            <>
+              <button
+                className="drink-button py-2 px-4 space-x-0.5"
+                disabled={isLoading}
+                onClick={() => {
+                  fetchAgain();
+                }}
+              >
+                <span>Try another</span> <FaDice />
+              </button>
+              <button
+                disabled={isLoading}
+                className="drink-button py-2 px-4"
+                onClick={() => {
+                  startOver();
+                }}
+              >
+                Start over
+              </button>
+            </>
+          )}
+          {hideButtons && (
+            <button
+              className="drink-button py-2 px-4"
+              onClick={() => {
+                window.history.back();
+              }}
+            >
+              Go back
+            </button>
+          )}
           <button
             className="drink-button py-2 px-4 disabled:bg-gray-300"
             disabled={isSaving}
-            onClick={() => saveDrink()}
+            onClick={() => onSaveDrink()}
           >
             {isDrinkSaved ? "Delete" : "Save"}
           </button>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { FetchedDrinksType, FetchedDrinkType } from "@/types/saved-drinks";
+import {FetchedDrinkType } from "@/types/saved-drinks";
+import Link from "next/link";
 
 type ListItemProps = {
   drink: FetchedDrinkType;
@@ -19,6 +20,7 @@ export const ListItem = ({ drink }: ListItemProps) => {
   }, [drink.name.length]);
 
   return (
+    <Link href={`/saved-drinks/${drink.id}`}>
     <div className="w-[175px] h-[200px] flex flex-col p-2 rounded-[20px] shadow-[rgba(7,_65,_210,_0.1)_0px_9px_30px]">
       <div className="flex justify-center items-center rounded-full">
         <Image
@@ -37,5 +39,6 @@ export const ListItem = ({ drink }: ListItemProps) => {
       </div>
       <div className="px-2">⭐4.5</div>
     </div>
+    </Link>
   );
 };
