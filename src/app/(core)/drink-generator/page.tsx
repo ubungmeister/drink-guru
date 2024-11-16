@@ -13,11 +13,8 @@ export default function Page() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
   const [drink, setDrink] = useState<DrinkRecipeType | null>(null);
- const [showStartModule, setShowStartModule] = useState(true);
+  const [showStartModule, setShowStartModule] = useState(true);
   const [isDataLoading, setIsDataLoading] = useState(false);
-
-
- 
 
   const buildQuestionnaire = () => {
     let questionnaire = `The client has completed a quiz to determine their cocktail preferences. Based on the answers provided, please suggest only one cocktail name that aligns with their taste. Only one coctail name. ${
@@ -96,7 +93,6 @@ export default function Page() {
     setAnswers(randomAnswers);
     fetchDrinkSuggestion();
   };
-
 
   if (isDataLoading) {
     return <DrinkLoading />;
