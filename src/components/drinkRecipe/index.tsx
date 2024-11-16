@@ -4,6 +4,7 @@ import Image from "next/image";
 import { FaDice } from "react-icons/fa";
 import { PuffLoader as Loader } from "react-spinners";
 import { toast } from "react-toastify";
+import { DrinkLoading } from "@/components/library/animations/DrinkLoading";
 
 interface DrinkRecipeProps {
   drink: DrinkRecipeType | null;
@@ -56,7 +57,7 @@ export const DrinkRecipe = ({
   };
 
   if (!drink) {
-    return <div>Loading...</div>;
+    return <DrinkLoading />;
   }
 
   const half = Math.ceil(drink.ingredients.length / 2);

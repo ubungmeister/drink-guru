@@ -13,12 +13,13 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
-      colors:{
-        'info-content':'#3c2d63',
-        
-      }
+      colors: {
+        "info-content": "#3c2d63",
+      },
+      fontFamily: {
+        sans: ["Inter", "sans-serif"], // Define Inter as the default sans-serif font
+      },
     },
-  
   },
   plugins: [],
 };
