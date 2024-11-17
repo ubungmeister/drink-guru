@@ -20,6 +20,7 @@ model Cocktail {
   id      String   @id @default(uuid())
   name    String   @unique
   image   String?
+  rating  Float?
   users   UserCocktail[]
 }
 
