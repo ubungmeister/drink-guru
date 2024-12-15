@@ -108,6 +108,7 @@ export default function Page() {
     return (
       <DrinkRecipe
         drink={drink}
+        metrics={metrics}
         startOver={onStartOver}
         fetchAgain={fetchDrinkSuggestion}
         isLoading={isDataLoading}

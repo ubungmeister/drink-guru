@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { DrinkRecipeType } from "@/types/drink-generator";
+import { DrinkRecipeType, MetricsType } from "@/types/drink-generator";
 import Image from "next/image";
 import { FaDice } from "react-icons/fa";
 import { PuffLoader as Loader } from "react-spinners";
@@ -12,9 +12,11 @@ interface DrinkRecipeProps {
   fetchAgain?: () => void;
   isLoading: boolean;
   hideButtons?: boolean;
+  metrics: MetricsType | null;
 }
 
 export const DrinkRecipe = ({
+  metrics,
   hideButtons,
   drink,
   startOver = () => {},
@@ -103,6 +105,36 @@ export const DrinkRecipe = ({
             </ul>
           </div>
         </div>
+        <div className="text-lg font-semibold mb-2">Metrics:</div>
+        {metrics ? (
+          <div className="grid grid-cols-2 gap-x-4 mb-4">
+            <ul>
+              <li>
+                <strong>Sweetness:</strong> {metrics.sweetness}/5
+              </li>
+              <li>
+                <strong>Sourness:</strong> {metrics.sourness}/5
+              </li>
+              <li>
+                <strong>Alco Strength:</strong> {metrics.alcoholStrength}/5
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <strong>Bitterness:</strong> {metrics.bitterness}/5
+              </li>
+              <li>
+                <strong>Time to Make:</strong> {metrics.timeToMake} min
+              </li>
+              <li>
+                <strong>Rating:</strong> {metrics.rating}⭐
+              </li>
+            </ul>
+          </div>
+        ) : (
+          <div>No metrics available.</div>
+        )}
+
         <div className="t-4">
           <div className="text-lg font-semibold mb-2">Instructions:</div>
           <p className="mt-4 max-w-full md:max-w-md">{drink.instructions}</p>

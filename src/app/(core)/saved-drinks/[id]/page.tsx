@@ -1,6 +1,6 @@
 "use client";
 
-import { savedSingleDrink, savedDrinks } from "@/utilities/useQueries/index";
+import { savedSingleDrink } from "@/utilities/useQueries/index";
 import { DrinkRecipe } from "@/components/drinkRecipe";
 import { useEffect } from "react";
 import { DrinkRecipeType } from "@/types/drink-generator";
@@ -15,6 +15,7 @@ export default function CocktailDetailPage({
   const { id } = params;
 
   const [drink, setDrink] = useState<DrinkRecipeType | null>(null);
+  const [metrics, setMetrics] = useState<any | null>(null);
   const [isDataLoading, setIsDataLoading] = useState(false);
 
   useEffect(() => {
@@ -22,6 +23,7 @@ export default function CocktailDetailPage({
       setIsDataLoading(true);
       try {
         const drink = await savedSingleDrink(id);
+        setMetrics(drink.metrics);
         setDrink(drink.filteredData);
       } catch (error) {
         console.error("Error fetching drink manually:", error);
@@ -38,7 +40,12 @@ export default function CocktailDetailPage({
 
   return (
     <div>
-      <DrinkRecipe drink={drink} isLoading={isDataLoading} hideButtons={!!id} />
+      <DrinkRecipe
+        metrics={metrics}
+        drink={drink}
+        isLoading={isDataLoading}
+        hideButtons={!!id}
+      />
     </div>
   );
 }

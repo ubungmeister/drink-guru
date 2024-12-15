@@ -35,16 +35,23 @@ export default async function handler(
       },
     });
 
-     if (savedDrink) {
+    if (savedDrink) {
       const response = await fetch(
         `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${drinkID}`,
       );
       const data = await response.json();
       const filteredData = dataFilter(data.drinks[0]);
 
+      // fetch metrics from the DB
+
+      const metrics = await prisma.cocktailMetric.findFirst({
+        where: {
+          cocktailId: drinkID as any,
+        },
+      });
       return res
         .status(200)
-        .json({ content: "Cocktail found", savedDrink, filteredData });
+        .json({ content: "Cocktail found", savedDrink, filteredData, metrics });
     } else {
       return res.status(404).json({ content: "Cocktail not saved" });
     }

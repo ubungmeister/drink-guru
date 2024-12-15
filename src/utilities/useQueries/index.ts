@@ -1,5 +1,5 @@
 export const savedDrinks = async () => {
-   const response = await fetch("/api/saveddrinks");
+  const response = await fetch("/api/saveddrinks");
   if (!response.ok) {
     throw new Error("Failed to fetch saved drinks");
   }
