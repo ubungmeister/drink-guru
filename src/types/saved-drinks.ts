@@ -1,3 +1,5 @@
+import { MetricsType } from '../types/drink-generator';
+
 export type FetchedDrinksType = {
   id: string;
   userId: string;
@@ -9,4 +11,5 @@ export type FetchedDrinkType = {
   id: string;
   name: string;
   image: string;
+  CocktailMetric?: MetricsType
 };

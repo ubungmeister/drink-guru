@@ -4,6 +4,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { authOptions } from "../auth/[...nextauth]";
 import { getServerSession } from "next-auth/next";
 import { z } from "zod";
+import config from "./../../../../tailwind.config";
+import { m } from "framer-motion";
 
 const drinkSchema = z.object({
   id: z.string(),
@@ -43,7 +45,6 @@ const handlePost = async (
   res: NextApiResponse,
   session: any,
 ) => {
-  console.log("here");
   try {
     console.log("req.body.drink", req.body.drink);
     const parsedData = drinkSchema.safeParse(req.body.drink);
@@ -108,7 +109,11 @@ const handleGet = async (
         userId: session.user.id,
       },
       include: {
-        cocktail: true,
+        cocktail: {
+          include: {
+            CocktailMetric: true, // Include the metrics for each cocktail
+          },
+        },
       },
     });
     console.log("savedDrinks", savedDrinks);
