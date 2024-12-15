@@ -18,3 +18,12 @@ export type DrinkRecipeType = {
   image: string;
   ingredients: { ingredient: string; measure: string }[];
 };
+
+export type MetricsType = {
+  sweetness:string
+  sourness:string
+  alcoholStrength:string
+  bitterness:string
+  timeToMake:string
+  rating:string
+}

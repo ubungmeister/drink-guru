@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Answers, DrinkRecipeType } from "@/types/drink-generator";
+import { Answers, DrinkRecipeType, MetricsType } from "@/types/drink-generator";
 import { questions } from "@/utilities/questionFileds";
 import { QuestionsList } from "@/components/questionsList";
 import { DrinkRecipe } from "@/components/drinkRecipe";
@@ -13,6 +13,7 @@ export default function Page() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
   const [drink, setDrink] = useState<DrinkRecipeType | null>(null);
+  const [metrics, setMetrics] = useState<MetricsType | null>(null);
   const [showStartModule, setShowStartModule] = useState(true);
   const [isDataLoading, setIsDataLoading] = useState(false);
 
@@ -55,7 +56,8 @@ export default function Page() {
     }
 
     const data = (await response.json()) as any;
-    setDrink(data.output);
+    setDrink(data.cocktail);
+    setMetrics(data.metrics);
     setIsDataLoading(false);
     // setShowDrink(true);
   };

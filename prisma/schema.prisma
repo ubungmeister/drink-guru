@@ -41,6 +41,7 @@ model CocktailMetric {
   alcoholStrength Float?
   bitterness      Float?
   timeToMake      Int?
+  rating          Float? //1-5 stars 
   createdAt       DateTime @default(now())
   Cocktail        Cocktail @relation(fields: [cocktailId], references: [id])
 }
