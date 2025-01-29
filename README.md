@@ -24,11 +24,9 @@ Check out the live demo: [Drink Guru](https://drink-guru.vercel.app)
 
 - **Frontend**: [Next.js](https://nextjs.org/)
 - **Backend**: Node.js with [Prisma](https://www.prisma.io/)
-- **Database**: [PostgreSQL](https://www.postgresql.org/) or [MySQL](https://www.mysql.com/) (depending on your setup)
-- **AI Integration**: Gemini API (for naming, metrics, and ratings)
+- **Database**: Postgres, using Superbase
+- **AI Integration**: Gemini API  
 - **Authentication**: [NextAuth.js](https://next-auth.js.org/)
 - **Styling**: [TailwindCSS](https://tailwindcss.com/)
-
-
 
 Enjoy your personalized cocktail journey with **Drink Guru**! 🍸
